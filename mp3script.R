@@ -1,0 +1,15 @@
+library(mdsr)
+library(RMySQL)
+db <- dbConnect_scidb(dbname = "imdb")
+
+western <- "SELECT t.id, t.title, t.production_year,mi1.info AS genres
+FROM title t
+JOIN movie_info AS mi1 ON mi1.movie_id = t.id
+WHERE t.kind_id = 1
+AND mi1.info_type_id = 3
+AND info = 'Western';
+"
+data <- db %>%
+  dbGetQuery(western)
+
+View(data)
