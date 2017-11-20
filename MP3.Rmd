@@ -30,10 +30,14 @@ BETWEEN 1900 AND 2015;
 data <- db %>%
   dbGetQuery(western)
 
-
+data_max <-data %>% filter(production_year %in% c("1912","2015"))
 
 ggplot(data, aes(production_year)) +
-       geom_histogram(binwidth = 1) 
+       geom_histogram(binwidth = 1) +  
+  geom_rect(data=data_max, aes(xmin=1912, xmax=1913, ymin= -Inf, ymax= +Inf), 
+            inherit.aes = FALSE, fill= "red", alpha = 0.1) +
+  geom_rect(data=data_max, aes(xmin=2013, xmax=2014, ymin= -Inf, ymax= +Inf), 
+            inherit.aes = FALSE, fill= "red", alpha = 0.1)
 
 ```
 
