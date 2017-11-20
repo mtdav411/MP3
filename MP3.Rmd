@@ -8,6 +8,9 @@ date:
 
 #Part 1
 ```{r, message=FALSE, echo=FALSE}
+library(tidyverse)
+library(scales)
+library(ggplot2)
 library(mdsr)
 library(RMySQL)
 db <- dbConnect_scidb(dbname = "imdb")
