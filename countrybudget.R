@@ -14,7 +14,7 @@ AND production_year
 BETWEEN 1900 AND 2015;
 "
 data_country_budget <- db %>%
-  dbGetQuery(western)
+  dbGetQuery(western2)
 
 View(data_country_budget)
 

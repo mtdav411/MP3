@@ -19,7 +19,11 @@ data <- db %>%
 View(data)
 
 ggplot(data, aes(production_year)) +
-       geom_histogram(binwidth = 1)
+       geom_histogram(binwidth = 1) +
+  geom_rect(data = data,
+            aes(xmin = begin, xmax = end, ymin = -Inf, ymax = +Inf),
+            inherit.aes = FALSE, fill = "red", alpha = 0.2) +
+  geom_line()
 
 #ggplot(data, aes(production_year)) + geom_histogram()
 #ggplot(data, aes(production_year), binwidth = range/10) +
