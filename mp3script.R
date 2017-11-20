@@ -1,4 +1,3 @@
-MAX= 1912 and 2015
 library(mdsr)
 library(RMySQL)
 db <- dbConnect_scidb(dbname = "imdb")

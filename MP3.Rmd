@@ -16,7 +16,7 @@ db <- dbConnect_scidb(dbname = "imdb")
 ```
 
 ```{r}
-
+#Join movie-info to title + Filtering only the Western genre movies between 1900 and 2015
 western <- "SELECT t.id, t.title, t.production_year, mi1.info AS Genres
 FROM title t
 JOIN movie_info AS mi1 ON mi1.movie_id = t.id
@@ -30,19 +30,25 @@ BETWEEN 1900 AND 2015;
 data <- db %>%
   dbGetQuery(western)
 
-data_max <-data %>% filter(production_year %in% c("1912","2015"))
+#Figuring out which year had produced more Western movies
+data1 <- data %>% group_by(production_year) %>% summarise(sum = n()) %>% arrange(desc(sum)) 
+head(data1) 
 
+
+#Plot1: hisotgram with periods 
 ggplot(data, aes(production_year)) +
-       geom_histogram(binwidth = 1) +  
-  geom_rect(data=data_max, aes(xmin=1912, xmax=1913, ymin= -Inf, ymax= +Inf), 
-            inherit.aes = FALSE, fill= "red", alpha = 0.1) +
-  geom_rect(data=data_max, aes(xmin=2013, xmax=2014, ymin= -Inf, ymax= +Inf), 
-            inherit.aes = FALSE, fill= "red", alpha = 0.1)
+  geom_histogram(binwidth = 1) +
+  geom_rect(data=data, aes(xmin=1910, xmax=1914, ymin= -Inf, ymax= +Inf), fill= "red", alpha = 0.002) +
+  geom_rect(data=data, aes(xmin=2013, xmax=2015, ymin= -Inf, ymax= +Inf), fill= "red", alpha = 0.002)
+
 
 ```
 
+The term western appeard the first time in july 1912 ev en if the genre was already existing + Westerns were very popular throughout the 1950s. Many of the most acclaimed Westerns were released during this time including High Noon (1952), Shane (1953), The Searchers (1956), and The Wild Bunch (1969). Classic Westerns such as these have been the inspiration for various films about Western-type characters in contemporary settings + the popularity of the Western continued to rise until its peak in the 1950s, when the number of Western films produced outnumbered all other genres combined.
+
 #Part 2
 ```{r}
+#Join movie-info to title again to add country info + Filtering only the Western genre movies outside the USA
 country <- "SELECT t.id, t.title, t.production_year, mi1.info AS Genres, mi2.info AS Country
 FROM title t
 JOIN movie_info AS mi1 ON mi1.movie_id = t.id
@@ -56,9 +62,13 @@ AND mi2.info <> 'USA';
 "
 data_country <- db %>%
   dbGetQuery(country)
+
+#Filtering only movie produced in 2015
 data_country_2015 <- data_country %>% filter(production_year == 2015)
-data_country_1950 <- data_country %>% filter(production_year == 1950)
 dim(data_country_2015)
+
+#Filtering only movie produced in 1950
+data_country_1950 <- data_country %>% filter(production_year == 1950)
 dim(data_country_1950)
 
 ```
