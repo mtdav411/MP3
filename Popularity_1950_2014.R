@@ -8,7 +8,7 @@ AND t.kind_id = 1
 AND mi1.info_type_id = 3
 AND mi2.info_type_id = 101
 AND mi1.info = 'Western'
-AND production_year = 2015
+AND production_year = 2014
 ORDER BY mi2.info desc
 LIMIT 0,10;
 "
