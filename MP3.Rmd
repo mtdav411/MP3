@@ -37,10 +37,9 @@ head(data1)
 
 #Plot1: hisotgram with periods 
 ggplot(data, aes(production_year)) +
-  geom_histogram(binwidth = 1) +
+  geom_histogram(binwidth = 1, alpha=.5, position="identity", fill ="#377EB8") +
   geom_rect(data=data, aes(xmin=1910, xmax=1914, ymin= -Inf, ymax= +Inf), fill= "red", alpha = 0.002) +
   geom_rect(data=data, aes(xmin=2013, xmax=2015, ymin= -Inf, ymax= +Inf), fill= "red", alpha = 0.002)
-
 
 ```
 
@@ -63,12 +62,47 @@ AND mi2.info <> 'USA';
 data_country <- db %>%
   dbGetQuery(country)
 
-#Filtering only movie produced in 2015
-data_country_2015 <- data_country %>% filter(production_year == 2015)
-dim(data_country_2015)
+#Filtering only movie produced in 2014
+data_country_2014 <- data_country %>% filter(production_year == 2014)
+dim(data_country_2014)
 
 #Filtering only movie produced in 1950
 data_country_1950 <- data_country %>% filter(production_year == 1950)
 dim(data_country_1950)
+
+
+popularity_2014 <- "SELECT t.id, t.title, t.production_year, mi1.info AS Genres, mi2.info AS Rating
+FROM title t
+JOIN movie_info AS mi1 ON mi1.movie_id = t.id
+JOIN movie_info_idx AS mi2 ON mi2.movie_id = t.id
+WHERE production_year IS NOT NULL
+AND t.kind_id = 1
+AND mi1.info_type_id = 3
+AND mi2.info_type_id = 101
+AND mi1.info = 'Western'
+AND production_year = 2015
+ORDER BY mi2.info desc
+LIMIT 0,10;
+"
+popularity_2014 <- db %>%
+  dbGetQuery(popularity_2014)
+head(popularity_2014)
+
+popularity_1950 <- "SELECT t.id, t.title, t.production_year, mi1.info AS Genres, mi2.info AS Rating
+FROM title t
+JOIN movie_info AS mi1 ON mi1.movie_id = t.id
+JOIN movie_info_idx AS mi2 ON mi2.movie_id = t.id
+WHERE production_year IS NOT NULL
+AND t.kind_id = 1
+AND mi1.info_type_id = 3
+AND mi2.info_type_id = 101
+AND mi1.info = 'Western'
+AND production_year = 1950
+ORDER BY mi2.info desc
+LIMIT 0,10;
+"
+popularity_1950 <- db %>%
+  dbGetQuery(popularity_1950)
+head(popularity_1950)
 
 ```
