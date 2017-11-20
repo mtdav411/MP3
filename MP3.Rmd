@@ -1,8 +1,6 @@
 ---
 title: "MP3"
 output: html_document
-author: 
-date: 
 ---
 
 
@@ -28,14 +26,10 @@ BETWEEN 1900 AND 2015;
 data <- db %>%
   dbGetQuery(western)
 
-View(data)
+
 
 ggplot(data, aes(production_year)) +
-       geom_histogram(binwidth = 1) +
-  geom_rect(data = data,
-            aes(xmin = begin, xmax = end, ymin = -Inf, ymax = +Inf),
-            inherit.aes = FALSE, fill = "red", alpha = 0.2) +
-  geom_line()
+       geom_histogram(binwidth = 1) 
 
 ```
 
