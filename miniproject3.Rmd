@@ -1,13 +1,13 @@
 ---
-title: "Mini-Project 3"
+title: "Analysis of the western genre "
 author: "Ran Tao, Angela Huang, David Munoz Tord"
 output:
   html_document:
     code_folding: hide
 ---
 
+Traditionally western films have been strictly about nomadic cowboys and gunfighters set in America in the late 19th century. In recent years, popular western genre movies have incorporated other aspects such as bounty hunters from other countries, LGBT topics, and technology. For Brokeback Mountain, it’s essentially a film about two cowboys that fell in love with each other. This LGBT centered topic would never be publicly shown or even filmed in the 1950s.  Django Unchained (2012) talks about a German dentist buying a African American slave. Many parts of the film shows scenes where Django is a African American cowboy riding a horse. West World (2016), which is a popular series on Netflix, where the setting is in the future with an amusement park of the imagined past such as bounty hunters, cowboys, guns and horse riding. 
 
-#Part 1
 ```{r message=FALSE, echo=FALSE, warning=FALSE}
 library(tidyverse)
 library(scales)
@@ -49,7 +49,7 @@ The term western appeard the first time in july 1912 ev en if the genre was alre
 
 We aim to see the definition of movie in 1950 and 2015 from the perspective of “budget”, “ country” and popularity. We tried to filter out the items “ budget” and “country” from the original dataset and see if there are any trend in these two aspects.
 
-#Part 2
+
 ```{r}
 # 1) Budget
 # Finding the mean budget by joinning movie-info to title to add country and budget info + Filtering only the Western genre movies in the USA
@@ -145,6 +145,25 @@ popularity_1950 <- db %>%
   dbGetQuery(popularity_1950)
 head(popularity_1950)
 
+
+```
+
+
+In conclusion, we found that the western movie peaks in 1912 and 2004 and the ebb period is between 1975 and 2000. Moreover, for definition of movie, we found that Western movie in 1950 tends to have less budget than western movie in 2015. In addition, from the aspect of country, we found that for 2015 Western movies, there are more movie having different country status, which means one movie produced in different countries. This stands for a more international trend for Western movie in 2015 than in 1950.  
+
+
+Today, with the high-speed development of technology and the shift of sociocultural values, western movies can be said to be going into a dead corner. What are the big changes they have gone through? We aim to look at successful top movie made in the past decade and explore what new possibilities and upcoming trends that can be associated with the genre. 
+
+Horses, sheriff, cowboys, and a battle of the good and evil Western genre that dominated cinema's first half-century went through many changes, from the golden age of the classical Westerns to italian western, antiwestern, and finally sci-fi western and neo-western. 
+
+Hollywood studios are good at retelling stories. They are packaged and presented with good music and cast. The stories are told for the culture that demands them. The popularity of the genre declined as it was seen to be out-of touch with the audience. In the corporate capitalistic society, the strongest fist will win in a individual fight, however there is still rule and order. Between 1920 and 1960s, production companies were fighting with television series over the market. By the late 1960s, Americans began questioning the values and ideas presented in the western genre. Western all’italiana came into play from 60s to the 70s, the term Spaghetti Western is given by the film industry to the western genre films produced by Italians. Europe has a hype for the western genre, it provides a new world with individualism, justice, and equality. These films tend have a short production range, with a set cast, exaggerated acting expressions, and black humor. The rise of the popularity of western genre in Europe is more due to economic reasons rather than a film movement. Even when film production of the genre slowed down in the U.S. , the generation of Europeans that was after WWII still enjoy horseriding cowboys in the frontier. The success of Spaghetti Western also has another reason, and that is the Italians were tired of epic American heroes such as Maciste, Hercule, and Goliath. It’s boring to watch these muscular heroes. In Italian Western, the heroes are usually very intelligent, and they would beat angry muscular antiprotagonist at the very beginning. The heores are not usually written in history, their names are usually Ringo, Django, Gringo, Rojo, Indio, and such. Just as Sergio Leone is the leading figure in Italian western, Tarantino also attracted many people watching western using his speical set of artistic expressions. It’s dark and violent, people have alot of different ways to die. Scholars have commented the decline of Western have alot to do with the anti-war movement, and many killing in the genre are disliked. 
+ 
+From the IMDB database, we found the top 10 movies with the highest gross box office. Out of the many attempts of movie creations, what attributes worked in presenting a story that audience enjoy? [Top ten Wetersn by gross](www.boxofficemojo.com/genres/chart/?id=western.htm)
+
+These movies are successful for a reason. Cowboys & Aliens was made in attempt to add sci-fi component. Rango incorporated animation with the setting taken place in the Wild West. Dances with the Wolves have a historical point of view and have an education impact. II buono, II brutto, II cativo is not entirely about the action but instead focuses on rendering the atmosphere and describing each character and their motives. 
+
+Also from the IMDB database, we found the top 10 movies with the highest ratings. We can compare the slight difference in both table. Movies in the rating category are more about how well it’s made where as gross box office means there’s a wider range of audience it appeals to. 
+```{r}
 popularity <- "SELECT t.title, t.production_year, mi2.info AS Rating
 FROM title t
 JOIN movie_info AS mi1 ON mi1.movie_id = t.id
@@ -157,15 +176,13 @@ AND mi1.info_type_id = 3
 AND mi2.info_type_id = 101
 AND mi1.info = 'Western'
 ORDER BY mi2.info desc
-LIMIT 0,20;
+LIMIT 0,10;
 "
 popularity <- db %>%
   dbGetQuery(popularity)
-head(popularity)
-
+print(popularity)
 ```
-Traditionally western films have been strictly about nomadic cowboys and gunfighters set in America in the late 19th century. In recent years, popular western genre movies have incorporated other aspects such as bounty hunters from other countries, LGBT topics, and technology. For Brokeback Mountain, it’s essentially a film about two cowboys that fell in love with each other. This LGBT centered topic would never be publicly shown or even filmed in the 1950s.  Django Unchained (2012) talks about a German dentist buying a African American slave. Many parts of the film shows scenes where Django is a African American cowboy riding a horse. West World (2016), which is a popular series on Netflix, where the setting is in the future with an amusement park of the imagined past such as bounty hunters, cowboys, guns and horse riding. 
 
-In conclusion, we found that the western movie peaks in 1912 and 2004 and the ebb period is between 1975 and 2000. Moreover, for definition of movie, we found that Western movie in 1950 tends to have less budget than western movie in 2015. In addition, from the aspect of country, we found that for 2015 Western movies, there are more movie having different country status, which means one movie produced in different countries. This stands for a more international trend for Western movie in 2015 than in 1950.  
+Western films could make a resurgence, but it will depend on a combination of things. By doing more market surveys, a quality script, speak to contemporary concerns, and good actors/directors might be able to produce a movie that is profitable. 
 
 
