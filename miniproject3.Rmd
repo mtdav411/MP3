@@ -1,8 +1,9 @@
 ---
 title: "Mini-Project 3"
 author: "Ran Tao, Angela Huang, David Munoz Tord"
-date: "November 21, 2017"
-output: html_document
+output:
+  html_document:
+    code_folding: hide
 ---
 
 
@@ -109,7 +110,9 @@ popularity_2014 <- "SELECT t.title, t.production_year, mi2.info AS Rating
 FROM title t
 JOIN movie_info AS mi1 ON mi1.movie_id = t.id
 JOIN movie_info_idx AS mi2 ON mi2.movie_id = t.id
+JOIN movie_info_idx AS mi3 ON mi3.movie_id = t.id
 WHERE production_year IS NOT NULL
+AND mi3.info > 100000
 AND t.kind_id = 1
 AND mi1.info_type_id = 3
 AND mi2.info_type_id = 101
@@ -127,7 +130,9 @@ popularity_1950 <- "SELECT t.title, t.production_year, mi2.info AS Rating
 FROM title t
 JOIN movie_info AS mi1 ON mi1.movie_id = t.id
 JOIN movie_info_idx AS mi2 ON mi2.movie_id = t.id
+JOIN movie_info_idx AS mi3 ON mi3.movie_id = t.id
 WHERE production_year IS NOT NULL
+AND mi3.info > 100000
 AND t.kind_id = 1
 AND mi1.info_type_id = 3
 AND mi2.info_type_id = 101
@@ -140,7 +145,23 @@ popularity_1950 <- db %>%
   dbGetQuery(popularity_1950)
 head(popularity_1950)
 
-
+popularity <- "SELECT t.title, t.production_year, mi2.info AS Rating
+FROM title t
+JOIN movie_info AS mi1 ON mi1.movie_id = t.id
+JOIN movie_info_idx AS mi2 ON mi2.movie_id = t.id
+JOIN movie_info_idx AS mi3 ON mi3.movie_id = t.id
+WHERE production_year IS NOT NULL
+AND mi3.info > 100000
+AND t.kind_id = 1
+AND mi1.info_type_id = 3
+AND mi2.info_type_id = 101
+AND mi1.info = 'Western'
+ORDER BY mi2.info desc
+LIMIT 0,20;
+"
+popularity <- db %>%
+  dbGetQuery(popularity)
+head(popularity)
 
 ```
 Traditionally western films have been strictly about nomadic cowboys and gunfighters set in America in the late 19th century. In recent years, popular western genre movies have incorporated other aspects such as bounty hunters from other countries, LGBT topics, and technology. For Brokeback Mountain, it’s essentially a film about two cowboys that fell in love with each other. This LGBT centered topic would never be publicly shown or even filmed in the 1950s.  Django Unchained (2012) talks about a German dentist buying a African American slave. Many parts of the film shows scenes where Django is a African American cowboy riding a horse. West World (2016), which is a popular series on Netflix, where the setting is in the future with an amusement park of the imagined past such as bounty hunters, cowboys, guns and horse riding. 
