@@ -18,7 +18,7 @@ This document was rendered on `r format(Sys.Date(), "%B %e, %Y")`
 
 Traditionally western films have been strictly about nomadic cowboys and gunfighters set in America in the late 19th century. In recent years, popular western genre movies have incorporated other aspects such as bounty hunters from other countries, LGBT topics, and technology. For Brokeback Mountain, it’s essentially a film about two cowboys that fell in love with each other. This LGBT centered topic would never be publicly shown or even filmed in the 1950s.  Django Unchained (2012) talks about a German dentist buying a African American slave. Many parts of the film shows scenes where Django is a African American cowboy riding a horse. West World (2016), which is a popular series on Netflix, where the setting is in the future with an amusement park of the imagined past such as bounty hunters, cowboys, guns and horse riding. 
 
-
+Table 1. Top ten years that produced more Western movies
 ```{r}
 #Join movie-info to title + Filtering only the Western genre movies between 1900 and 2015
 western <- "SELECT t.id, t.title, t.production_year AS Year, mi1.info AS Genres
@@ -36,18 +36,25 @@ data <- db %>%
 
 #Figuring out which year had produced more Western movies
 data1 <- data %>% group_by(Year) %>% summarise(sum = n()) %>% arrange(desc(sum)) 
-#head(data1) 
+head(data1) 
+
+```
+
+We found that the western movie peaks in 1912 and 2014 and the ebb period is between 1975 and 2000. Which makes sence because the term western appeared the first time in july 1912 even if the genre was already existing.
 
 
-#Plot1: hisotgram with periods 
+Histogram of production of Western movie from 1900 to 2015
+```{r}
+#Plot1: histogram with periods 
 ggplot(data, aes(Year)) +geom_histogram(binwidth = 1, alpha=.5, position="identity", fill ="#377EB8") + scale_x_continuous(breaks=seq(1900,2010,10), labels=c("1900","1910","1920","1930","1940","1950","1960","1970","1980","1990","2000", "2010")) +
   geom_rect(data=data, aes(xmin=1910, xmax=1914, ymin= -Inf, ymax= +Inf), fill= "red", alpha = 0.002) +
   geom_rect(data=data, aes(xmin=2013, xmax=2015, ymin= -Inf, ymax= +Inf), fill= "red", alpha = 0.002)
 
 ```
-we found that the western movie peaks in 1912 and 2004 and the ebb period is between 1975 and 2000.
 
-The term western appeard the first time in july 1912 ev en if the genre was already existing + Westerns were very popular throughout the 1950s. Many of the most acclaimed Westerns were released during this time including High Noon (1952), Shane (1953), The Searchers (1956), and The Wild Bunch (1969). Classic Westerns such as these have been the inspiration for various films about Western-type characters in contemporary settings + the popularity of the Western continued to rise until its peak in the 1950s, when the number of Western films produced outnumbered all other genres combined.
+Westerns were very popular throughout the 1950s. Many of the most acclaimed Westerns were released during this time including High Noon (1952), Shane (1953), The Searchers (1956), and The Wild Bunch (1969). Classic Westerns such as these have been the inspiration for various films about Western-type characters in contemporary settings. The popularity of the Western continued to rise until its peak in the 1950s, when the number of Western films produced outnumbered all other genres combined.
+
+
 
 We aim to see the definition of movie in 1950 and 2015 from the perspective of “budget”, “ country” and popularity. We tried to filter out the items “ budget” and “country” from the original dataset and see if there are any trend in these two aspects.
 
@@ -79,8 +86,8 @@ data_budget_2014 <- data_budget %>% filter(production_year == 2014)
 
 # We then downloaded the data and uploaded it again so we could extract the numerical values from the "$" and the "," on the budget column. Finally we just calculated the average (not shown here).
 
-#Average_budget_2014 = 3762362
-#Average_budget_1950 = 1188442
+Average_budget_2014 = 3762362
+Average_budget_1950 = 1188442
 
 # 2) Country
 # Finding the number of non-US western movies by joinning movie-info to title to add country info + Filtering only the Western genre movies outside the USA
@@ -100,11 +107,11 @@ data_country <- db %>%
 
 #Filtering only movie produced in 2014
 data_country_2014 <- data_country %>% filter(production_year == 2014)
-#dim(data_country_2014)
+dim(data_country_2014)
 
 #Filtering only movie produced in 1950
 data_country_1950 <- data_country %>% filter(production_year == 1950)
-#dim(data_country_1950)
+dim(data_country_1950)
 
 # 3) Popularity
 #Finding the most popular western movies by joinning movie-info to title to add country and rating info + Filtering only the Western genre movies produced in 2014 only
@@ -125,7 +132,7 @@ LIMIT 0,10;
 "
 popularity_2014 <- db %>%
   dbGetQuery(popularity_2014)
-#head(popularity_2014)
+head(popularity_2014)
 
 #Finding the most popular western movies by joinning movie-info to title to add country and rating info + Filtering only the Western genre movies produced in 1950 only
 popularity_1950 <- "SELECT t.title, t.production_year, mi2.info AS Rating
@@ -145,7 +152,7 @@ LIMIT 0,10;
 "
 popularity_1950 <- db %>%
   dbGetQuery(popularity_1950)
-#head(popularity_1950)
+head(popularity_1950)
 
 
 ```
