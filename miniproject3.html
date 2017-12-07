@@ -139,11 +139,11 @@ $(document).ready(function () {
 </div>
 
 
-<p>This document was rendered on December 6, 2017</p>
+<p>This document was rendered on December 7, 2017</p>
 <p>Traditionally western films have been strictly about nomadic cowboys and gunfighters set in America in the late 19th century. In recent years, popular western genre movies have incorporated other aspects such as bounty hunters from other countries, LGBT topics, and technology. For Brokeback Mountain, it’s essentially a film about two cowboys that fell in love with each other. This LGBT centered topic would never be publicly shown or even filmed in the 1950s. Django Unchained (2012) talks about a German dentist buying a African American slave. Many parts of the film shows scenes where Django is a African American cowboy riding a horse. West World (2016), which is a popular series on Netflix, where the setting is in the future with an amusement park of the imagined past such as bounty hunters, cowboys, guns and horse riding.</p>
 <p>Table 1. Top ten years that produced more Western movies</p>
 <pre class="r"><code>#Join movie-info to title + Filtering only the Western genre movies between 1900 and 2015
-western &lt;- &quot;SELECT t.id, t.title, t.production_year AS Year, mi1.info AS Genres
+western &lt;- &quot;SELECT t.id, t.title, t.production_year AS Year, mi1.info AS Genre
 FROM title t
 JOIN movie_info AS mi1 ON mi1.movie_id = t.id
 WHERE t.production_year IS NOT NULL
@@ -157,17 +157,103 @@ data &lt;- db %&gt;%
   dbGetQuery(western)
 
 #Figuring out which year had produced more Western movies
-data1 &lt;- data %&gt;% group_by(Year) %&gt;% summarise(sum = n()) %&gt;% arrange(desc(sum)) 
-head(data1) </code></pre>
-<pre><code>## # A tibble: 6 x 2
-##    Year   sum
-##   &lt;int&gt; &lt;int&gt;
-## 1  1912   590
-## 2  1911   524
-## 3  1913   502
-## 4  1914   413
-## 5  1910   389
-## 6  2014   354</code></pre>
+data1 &lt;- data %&gt;% group_by(Year) %&gt;% summarise(sum = n()) %&gt;% arrange(desc(sum)) %&gt;% top_n(10)
+kable(data1, &quot;html&quot;) %&gt;%
+  kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F, position = &quot;center&quot;) </code></pre>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+Year
+</th>
+<th style="text-align:right;">
+sum
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1912
+</td>
+<td style="text-align:right;">
+590
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1911
+</td>
+<td style="text-align:right;">
+524
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1913
+</td>
+<td style="text-align:right;">
+502
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1914
+</td>
+<td style="text-align:right;">
+413
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1910
+</td>
+<td style="text-align:right;">
+389
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2014
+</td>
+<td style="text-align:right;">
+354
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2013
+</td>
+<td style="text-align:right;">
+320
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1915
+</td>
+<td style="text-align:right;">
+310
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2015
+</td>
+<td style="text-align:right;">
+303
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2012
+</td>
+<td style="text-align:right;">
+293
+</td>
+</tr>
+</tbody>
+</table>
 <p>We found that the western movie peaks in 1912 and 2014 and the ebb period is between 1975 and 2000. Which makes sence because the term western appeared the first time in july 1912 even if the genre was already existing.</p>
 <p>Histogram of production of Western movie from 1900 to 2015</p>
 <pre class="r"><code>#Plot1: histogram with periods 
@@ -196,17 +282,49 @@ data_budget &lt;- db %&gt;%
   dbGetQuery(budget)
 
 # Filtering for 1950
-data_budget_1950 &lt;- data_budget %&gt;% filter(production_year == 1950)
-# Filtering for 2014
-data_budget_2014 &lt;- data_budget %&gt;% filter(production_year == 2014)
+data_budget_1950 &lt;- data_budget %&gt;% filter(production_year == 1950) %&gt;% mutate (Budget= parse_number(Budget)) %&gt;% summarise(Average_Budget_1950 =(mean(Budget)))
 
+kable(data_budget_1950, &quot;html&quot;) %&gt;%
+  kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F, position = &quot;center&quot;)</code></pre>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+Average_Budget_1950
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1188442
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># Filtering for 2014
+data_budget_2014 &lt;- data_budget %&gt;% filter(production_year == 2014) %&gt;% mutate (Budget= parse_number(Budget))%&gt;% summarise(Average_Budget_2014 =(mean(Budget)))
 
-# We then downloaded the data and uploaded it again so we could extract the numerical values from the &quot;$&quot; and the &quot;,&quot; on the budget column. Finally we just calculated the average (not shown here).
-
-Average_budget_2014 = 3762362
-Average_budget_1950 = 1188442
-
-# 2) Country
+kable(data_budget_2014, &quot;html&quot;) %&gt;%
+  kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F, position = &quot;center&quot;)</code></pre>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+Average_Budget_2014
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+966877.9
+</td>
+</tr>
+</tbody>
+</table>
+<p>We found that Western movies in 1950 tends to have less budget than western movies in 2014.</p>
+<pre class="r"><code># 2) Country
 # Finding the number of non-US western movies by joinning movie-info to title to add country info + Filtering only the Western genre movies outside the USA
 country &lt;- &quot;SELECT t.id, t.title, t.production_year, mi1.info AS Genres, mi2.info AS Country
 FROM title t
@@ -222,42 +340,55 @@ AND mi2.info &lt;&gt; 'USA';
 data_country &lt;- db %&gt;%
   dbGetQuery(country)
 
-#Filtering only movie produced in 2014
-data_country_2014 &lt;- data_country %&gt;% filter(production_year == 2014)
-dim(data_country_2014)</code></pre>
-<pre><code>## [1] 152   5</code></pre>
-<pre class="r"><code>#Filtering only movie produced in 1950
-data_country_1950 &lt;- data_country %&gt;% filter(production_year == 1950)
-dim(data_country_1950)</code></pre>
-<pre><code>## [1] 4 5</code></pre>
+
+#Filtering only movie produced in 1950
+data_country_1950 &lt;- data_country %&gt;% filter(production_year == 1950) %&gt;% summarise(number_of_non_US_western_1950 = length(id))
+
+kable(data_country_1950, &quot;html&quot;) %&gt;%
+  kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F, position = &quot;center&quot;)</code></pre>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+number_of_non_US_western_1950
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>#Filtering only movie produced in 2014
+data_country_2014 &lt;- data_country %&gt;% filter(production_year == 2014) %&gt;% summarise(number_of_non_US_western_2014 = length(id))
+
+kable(data_country_2014, &quot;html&quot;) %&gt;%
+  kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F, position = &quot;center&quot;)</code></pre>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+number_of_non_US_western_2014
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+152
+</td>
+</tr>
+</tbody>
+</table>
+<p>In addition, from the aspect of country, we found that for 2014 Western movies, there are more movies having different country status, which means one movie produced in different countries. This stands for a more international trend for Western movie in 2014 than in 1950.</p>
+<p>Today, with the high-speed development of technology and the shift of sociocultural values, western movies can be said to be going into a dead corner. What are the big changes they have gone through? We aim to look at successful top movie made in the past decade and explore what new possibilities and upcoming trends that can be associated with the genre.</p>
+<p>Horses, sheriff, cowboys, and a battle of the good and evil Western genre that dominated cinema’s first half-century went through many changes, from the golden age of the classical Westerns to italian western, antiwestern, and finally sci-fi western and neo-western.</p>
+<p>Hollywood studios are good at retelling stories. They are packaged and presented with good music and cast. The stories are told for the culture that demands them. The popularity of the genre declined as it was seen to be out-of touch with the audience. In the corporate capitalistic society, the strongest fist will win in a individual fight, however there is still rule and order. Between 1920 and 1960s, production companies were fighting with television series over the market. By the late 1960s, Americans began questioning the values and ideas presented in the western genre. Western all’italiana came into play from 60s to the 70s, the term Spaghetti Western is given by the film industry to the western genre films produced by Italians. Europe has a hype for the western genre, it provides a new world with individualism, justice, and equality. These films tend have a short production range, with a set cast, exaggerated acting expressions, and black humor. The rise of the popularity of western genre in Europe is more due to economic reasons rather than a film movement. Even when film production of the genre slowed down in the U.S. , the generation of Europeans that was after WWII still enjoy horseriding cowboys in the frontier. The success of Spaghetti Western also has another reason, and that is the Italians were tired of epic American heroes such as Maciste, Hercule, and Goliath. It’s boring to watch these muscular heroes. In Italian Western, the heroes are usually very intelligent, and they would beat angry muscular antiprotagonist at the very beginning. The heores are not usually written in history, their names are usually Ringo, Django, Gringo, Rojo, Indio, and such. Just as Sergio Leone is the leading figure in Italian western, Tarantino also attracted many people watching western using his speical set of artistic expressions. It’s dark and violent, people have alot of different ways to die. Scholars have commented the decline of Western have alot to do with the anti-war movement, and many killing in the genre are disliked.</p>
 <pre class="r"><code># 3) Popularity
-#Finding the most popular western movies by joinning movie-info to title to add country and rating info + Filtering only the Western genre movies produced in 2014 only
-popularity_2014 &lt;- &quot;SELECT t.title, t.production_year, mi2.info AS Rating
-FROM title t
-JOIN movie_info AS mi1 ON mi1.movie_id = t.id
-JOIN movie_info_idx AS mi2 ON mi2.movie_id = t.id
-JOIN movie_info_idx AS mi3 ON mi3.movie_id = t.id
-WHERE production_year IS NOT NULL
-AND mi3.info &gt; 100000
-AND t.kind_id = 1
-AND mi1.info_type_id = 3
-AND mi2.info_type_id = 101
-AND mi1.info = 'Western'
-AND production_year = 2014
-ORDER BY mi2.info desc
-LIMIT 0,10;
-&quot;
-popularity_2014 &lt;- db %&gt;%
-  dbGetQuery(popularity_2014)
-head(popularity_2014)</code></pre>
-<pre><code>##                               title production_year Rating
-## 1                       Falcon Song            2014    6.5
-## 2                             Jauja            2014    6.4
-## 3 A Million Ways to Die in the West            2014    6.1
-## 4 A Million Ways to Die in the West            2014    6.1
-## 5                  Dummie de Mummie            2014    6.1
-## 6                  The Keeping Room            2014    6.0</code></pre>
-<pre class="r"><code>#Finding the most popular western movies by joinning movie-info to title to add country and rating info + Filtering only the Western genre movies produced in 1950 only
+#Finding the most popular western movies by joinning movie-info to title to add country and rating info + Filtering only the Western genre movies produced in 1950 only
 popularity_1950 &lt;- &quot;SELECT t.title, t.production_year, mi2.info AS Rating
 FROM title t
 JOIN movie_info AS mi1 ON mi1.movie_id = t.id
@@ -273,23 +404,476 @@ AND production_year = 1950
 ORDER BY mi2.info desc
 LIMIT 0,10;
 &quot;
-popularity_1950 &lt;- db %&gt;%
+data_popularity_1950 &lt;- db %&gt;%
   dbGetQuery(popularity_1950)
-head(popularity_1950)</code></pre>
-<pre><code>##                title production_year Rating
-## 1             Sierra            1950    6.8
-## 2        Fancy Pants            1950    6.7
-## 3  Salt Lake Raiders            1950    6.5
-## 4 The Kid from Texas            1950    6.5
-## 5             Ambush            1950    6.4
-## 6           Frenchie            1950    6.4</code></pre>
-<p>In conclusion, we found that Western movies in 1950 tends to have less budget than western movies in 2015. In addition, from the aspect of country, we found that for 2015 Western movies, there are more movie having different country status, which means one movie produced in different countries. This stands for a more international trend for Western movie in 2015 than in 1950.</p>
-<p>Today, with the high-speed development of technology and the shift of sociocultural values, western movies can be said to be going into a dead corner. What are the big changes they have gone through? We aim to look at successful top movie made in the past decade and explore what new possibilities and upcoming trends that can be associated with the genre.</p>
-<p>Horses, sheriff, cowboys, and a battle of the good and evil Western genre that dominated cinema’s first half-century went through many changes, from the golden age of the classical Westerns to italian western, antiwestern, and finally sci-fi western and neo-western.</p>
-<p>Hollywood studios are good at retelling stories. They are packaged and presented with good music and cast. The stories are told for the culture that demands them. The popularity of the genre declined as it was seen to be out-of touch with the audience. In the corporate capitalistic society, the strongest fist will win in a individual fight, however there is still rule and order. Between 1920 and 1960s, production companies were fighting with television series over the market. By the late 1960s, Americans began questioning the values and ideas presented in the western genre. Western all’italiana came into play from 60s to the 70s, the term Spaghetti Western is given by the film industry to the western genre films produced by Italians. Europe has a hype for the western genre, it provides a new world with individualism, justice, and equality. These films tend have a short production range, with a set cast, exaggerated acting expressions, and black humor. The rise of the popularity of western genre in Europe is more due to economic reasons rather than a film movement. Even when film production of the genre slowed down in the U.S. , the generation of Europeans that was after WWII still enjoy horseriding cowboys in the frontier. The success of Spaghetti Western also has another reason, and that is the Italians were tired of epic American heroes such as Maciste, Hercule, and Goliath. It’s boring to watch these muscular heroes. In Italian Western, the heroes are usually very intelligent, and they would beat angry muscular antiprotagonist at the very beginning. The heores are not usually written in history, their names are usually Ringo, Django, Gringo, Rojo, Indio, and such. Just as Sergio Leone is the leading figure in Italian western, Tarantino also attracted many people watching western using his speical set of artistic expressions. It’s dark and violent, people have alot of different ways to die. Scholars have commented the decline of Western have alot to do with the anti-war movement, and many killing in the genre are disliked.</p>
+
+data_popularity_1950_1 &lt;- data_popularity_1950 %&gt;%  rename(&quot;Title&quot; = title, &quot;Year&quot; = production_year)
+       
+kable(data_popularity_1950_1, &quot;html&quot;) %&gt;%
+  kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F, position = &quot;center&quot;)</code></pre>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Title
+</th>
+<th style="text-align:right;">
+Year
+</th>
+<th style="text-align:left;">
+Rating
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Sierra
+</td>
+<td style="text-align:right;">
+1950
+</td>
+<td style="text-align:left;">
+6.8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fancy Pants
+</td>
+<td style="text-align:right;">
+1950
+</td>
+<td style="text-align:left;">
+6.7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Salt Lake Raiders
+</td>
+<td style="text-align:right;">
+1950
+</td>
+<td style="text-align:left;">
+6.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+The Kid from Texas
+</td>
+<td style="text-align:right;">
+1950
+</td>
+<td style="text-align:left;">
+6.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ambush
+</td>
+<td style="text-align:right;">
+1950
+</td>
+<td style="text-align:left;">
+6.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Frenchie
+</td>
+<td style="text-align:right;">
+1950
+</td>
+<td style="text-align:left;">
+6.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Singing Guns
+</td>
+<td style="text-align:right;">
+1950
+</td>
+<td style="text-align:left;">
+6.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sunset in the West
+</td>
+<td style="text-align:right;">
+1950
+</td>
+<td style="text-align:left;">
+6.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Trail of the Rustlers
+</td>
+<td style="text-align:right;">
+1950
+</td>
+<td style="text-align:left;">
+6.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bells of Coronado
+</td>
+<td style="text-align:right;">
+1950
+</td>
+<td style="text-align:left;">
+6.3
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>#Finding the most popular western movies by joinning movie-info to title to add country and rating info + Filtering only the Western genre movies produced in 2014 only
+popularity_2014 &lt;- &quot;SELECT t.title, t.production_year, mi2.info AS Rating
+FROM title t
+JOIN movie_info AS mi1 ON mi1.movie_id = t.id
+JOIN movie_info_idx AS mi2 ON mi2.movie_id = t.id
+JOIN movie_info_idx AS mi3 ON mi3.movie_id = t.id
+WHERE production_year IS NOT NULL
+AND mi3.info &gt; 100000
+AND t.kind_id = 1
+AND mi1.info_type_id = 3
+AND mi2.info_type_id = 101
+AND mi1.info = 'Western'
+AND production_year = 2014
+ORDER BY mi2.info desc
+LIMIT 0,10;
+&quot;
+data_popularity_2014 &lt;- db %&gt;%
+  dbGetQuery(popularity_2014)
+
+data_popularity_2014_1 &lt;- data_popularity_2014 %&gt;%  rename(&quot;Title&quot; = title, &quot;Year&quot; = production_year)
+
+kable(data_popularity_2014_1, &quot;html&quot;) %&gt;%
+  kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F, position = &quot;center&quot;)</code></pre>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Title
+</th>
+<th style="text-align:right;">
+Year
+</th>
+<th style="text-align:left;">
+Rating
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Falcon Song
+</td>
+<td style="text-align:right;">
+2014
+</td>
+<td style="text-align:left;">
+6.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jauja
+</td>
+<td style="text-align:right;">
+2014
+</td>
+<td style="text-align:left;">
+6.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A Million Ways to Die in the West
+</td>
+<td style="text-align:right;">
+2014
+</td>
+<td style="text-align:left;">
+6.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A Million Ways to Die in the West
+</td>
+<td style="text-align:right;">
+2014
+</td>
+<td style="text-align:left;">
+6.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dummie de Mummie
+</td>
+<td style="text-align:right;">
+2014
+</td>
+<td style="text-align:left;">
+6.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+The Keeping Room
+</td>
+<td style="text-align:right;">
+2014
+</td>
+<td style="text-align:left;">
+6.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Darkness on the Edge of Town
+</td>
+<td style="text-align:right;">
+2014
+</td>
+<td style="text-align:left;">
+5.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Young Ones
+</td>
+<td style="text-align:right;">
+2014
+</td>
+<td style="text-align:left;">
+5.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Délibáb
+</td>
+<td style="text-align:right;">
+2014
+</td>
+<td style="text-align:left;">
+5.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+El Ardor
+</td>
+<td style="text-align:right;">
+2014
+</td>
+<td style="text-align:left;">
+5.1
+</td>
+</tr>
+</tbody>
+</table>
+<p>XXX WRITE SOMETHING ANOUT THAT XXX</p>
+<pre class="r"><code>toptengross &lt;- &quot;SELECT t.id, t.title, t.production_year,mi1.info AS Genre, mi2.info AS Gross
+FROM title t
+JOIN movie_info AS mi1 ON mi1.movie_id = t.id
+JOIN movie_info AS mi2 ON mi2.movie_id = t.id
+WHERE production_year IS NOT NULL
+AND t.kind_id = 1
+AND mi1.info_type_id = 3
+AND mi2.info_type_id = 107
+AND mi1.info = 'Western';
+&quot;
+data_toptengross &lt;- db %&gt;%
+  dbGetQuery(toptengross)
+
+
+data_toptengross &lt;- cSplit(data_toptengross, &quot;Gross&quot;, &quot;(&quot;)
+
+data_toptengross_final &lt;- data_toptengross %&gt;%  mutate (Gross= parse_number(Gross_1)) %&gt;% group_by(id, title, production_year) %&gt;% summarise(Gross=max(Gross)) %&gt;% arrange(desc(Gross)) %&gt;% rename(&quot;Title&quot; = title, &quot;Year&quot; = production_year)
+
+data_toptengross_final_1 &lt;- head(data_toptengross_final,10)
+
+kable(data_toptengross_final_1, &quot;html&quot;) %&gt;%
+  kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F, position = &quot;center&quot;)</code></pre>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+id
+</th>
+<th style="text-align:left;">
+Title
+</th>
+<th style="text-align:right;">
+Year
+</th>
+<th style="text-align:right;">
+Gross
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+3736694
+</td>
+<td style="text-align:left;">
+Il mio West
+</td>
+<td style="text-align:right;">
+1998
+</td>
+<td style="text-align:right;">
+12159896000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3445804
+</td>
+<td style="text-align:left;">
+Continuavano a chiamarlo Trinità
+</td>
+<td style="text-align:right;">
+1971
+</td>
+<td style="text-align:right;">
+3900000000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4080743
+</td>
+<td style="text-align:left;">
+Per qualche dollaro in più
+</td>
+<td style="text-align:right;">
+1965
+</td>
+<td style="text-align:right;">
+3492000000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4080785
+</td>
+<td style="text-align:left;">
+Per un pugno di dollari
+</td>
+<td style="text-align:right;">
+1964
+</td>
+<td style="text-align:right;">
+3182000000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3542389
+</td>
+<td style="text-align:left;">
+E poi lo chiamarono il magnifico
+</td>
+<td style="text-align:right;">
+1972
+</td>
+<td style="text-align:right;">
+2870848000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3736678
+</td>
+<td style="text-align:left;">
+Il mio nome è Nessuno
+</td>
+<td style="text-align:right;">
+1973
+</td>
+<td style="text-align:right;">
+2698800000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4588707
+</td>
+<td style="text-align:left;">
+Zanna Bianca
+</td>
+<td style="text-align:right;">
+1973
+</td>
+<td style="text-align:right;">
+2471000000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3735016
+</td>
+<td style="text-align:left;">
+Il buono, il brutto, il cattivo
+</td>
+<td style="text-align:right;">
+1966
+</td>
+<td style="text-align:right;">
+2098000000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4410363
+</td>
+<td style="text-align:left;">
+The Quick and the Dead
+</td>
+<td style="text-align:right;">
+1995
+</td>
+<td style="text-align:right;">
+1766678000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3392993
+</td>
+<td style="text-align:left;">
+C’era una volta il West
+</td>
+<td style="text-align:right;">
+1968
+</td>
+<td style="text-align:right;">
+1685000000
+</td>
+</tr>
+</tbody>
+</table>
 <p>From <a href="https://www.newsday.com/entertainment/movies/top-10-highest-grossing-westerns-1.5573403">Newsday</a>, we found the top 10 movies with the highest gross box office (adjusted for inflation). Out of the many attempts of movie creations, what attributes worked in presenting a story that audience enjoy?</p>
 <p>These movies are successful for a reason. Cowboys &amp; Aliens was made in attempt to add sci-fi component. Rango incorporated animation with the setting taken place in the Wild West. Dances with the Wolves have a historical point of view and have an education impact. II buono, II brutto, II cativo is not entirely about the action but instead focuses on rendering the atmosphere and describing each character and their motives.</p>
-<p>Als, from the IMDB database, we found the top 10 movies with the highest ratings. We can compare the slight difference in both table. Movies in the rating category are more about how well it’s made where as gross box office means there’s a wider range of audience it appeals to.</p>
+<p>Also, we found the top 10 movies with the highest ratings. We can compare the slight difference in both table. Movies in the rating category are more about how well it’s made where as gross box office means there’s a wider range of audience it appeals to.</p>
 <pre class="r"><code>popularity &lt;- &quot;SELECT t.title, t.production_year, mi2.info AS Rating
 FROM title t
 JOIN movie_info AS mi1 ON mi1.movie_id = t.id
@@ -304,21 +888,351 @@ AND mi1.info = 'Western'
 ORDER BY mi2.info desc
 LIMIT 0,10;
 &quot;
-popularity &lt;- db %&gt;%
+data_popularity &lt;- db %&gt;%
   dbGetQuery(popularity)
-print(popularity)</code></pre>
-<pre><code>##                                 title production_year Rating
-## 1     Il buono, il brutto, il cattivo            1966    8.9
-## 2             C'era una volta il West            1968    8.6
-## 3                    Django Unchained            2012    8.4
-## 4          Per qualche dollaro in più            1965    8.3
-## 5                          Unforgiven            1992    8.2
-## 6  Butch Cassidy and the Sundance Kid            1969    8.1
-## 7                  Dances with Wolves            1990    8.0
-## 8             Per un pugno di dollari            1964    8.0
-## 9                        The Revenant            2015    8.0
-## 10                    Blazing Saddles            1974    7.8</code></pre>
+
+data_popularity_1 &lt;- data_popularity %&gt;%  rename(&quot;Title&quot; = title, &quot;Year&quot; = production_year)
+
+kable(data_popularity_1, &quot;html&quot;) %&gt;%
+  kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F, position = &quot;center&quot;)</code></pre>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Title
+</th>
+<th style="text-align:right;">
+Year
+</th>
+<th style="text-align:left;">
+Rating
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Il buono, il brutto, il cattivo
+</td>
+<td style="text-align:right;">
+1966
+</td>
+<td style="text-align:left;">
+8.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C’era una volta il West
+</td>
+<td style="text-align:right;">
+1968
+</td>
+<td style="text-align:left;">
+8.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Django Unchained
+</td>
+<td style="text-align:right;">
+2012
+</td>
+<td style="text-align:left;">
+8.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Per qualche dollaro in più
+</td>
+<td style="text-align:right;">
+1965
+</td>
+<td style="text-align:left;">
+8.3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Unforgiven
+</td>
+<td style="text-align:right;">
+1992
+</td>
+<td style="text-align:left;">
+8.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Butch Cassidy and the Sundance Kid
+</td>
+<td style="text-align:right;">
+1969
+</td>
+<td style="text-align:left;">
+8.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dances with Wolves
+</td>
+<td style="text-align:right;">
+1990
+</td>
+<td style="text-align:left;">
+8.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Per un pugno di dollari
+</td>
+<td style="text-align:right;">
+1964
+</td>
+<td style="text-align:left;">
+8.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+The Revenant
+</td>
+<td style="text-align:right;">
+2015
+</td>
+<td style="text-align:left;">
+8.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Blazing Saddles
+</td>
+<td style="text-align:right;">
+1974
+</td>
+<td style="text-align:left;">
+7.8
+</td>
+</tr>
+</tbody>
+</table>
 <p>Western films could make a resurgence, but it will depend on a combination of things. By doing more market surveys, a quality script, speak to contemporary concerns, and good actors/directors might be able to produce a movie that is profitable.</p>
+<pre class="r"><code>#Finding the gross and budget of western movies 
+
+profit &lt;- &quot;SELECT t.id, t.title, t.production_year, mi2.info AS Gross, mi3.info AS Budget
+FROM title t
+JOIN movie_info AS mi1 ON mi1.movie_id = t.id
+JOIN movie_info AS mi2 ON mi2.movie_id = t.id
+JOIN movie_info AS mi3 ON mi3.movie_id = t.id
+WHERE production_year IS NOT NULL
+AND t.kind_id = 1
+AND t.title IN ('Cowboys &amp; Aliens', 'Rango', 'Django Unchained', 'The Revenant', 'High Noon', 'Shane', 'The Researchers', 'The Wild Bunch', 'Dances with Wolves' )
+AND mi1.info_type_id = 3
+AND mi2.info_type_id = 107
+AND mi3.info_type_id = 105;
+&quot;
+data_profit &lt;- db %&gt;%
+  dbGetQuery(profit)
+
+data_profit &lt;- cSplit(data_profit, &quot;Gross&quot;, &quot;(&quot;)
+
+data_profit_final &lt;- data_profit %&gt;%  mutate (Gross= parse_number(Gross_1), Budget= parse_number(Budget)) %&gt;% group_by(id, title, production_year, Budget) %&gt;% summarise(Gross=max(Gross)) %&gt;% mutate (Profits = (Gross-Budget)) %&gt;%
+rename(&quot;Title&quot; = title, &quot;Year&quot; = production_year)
+
+kable(data_profit_final, &quot;html&quot;) %&gt;%
+  kable_styling(bootstrap_options = &quot;striped&quot;, full_width = F, position = &quot;center&quot;)</code></pre>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+id
+</th>
+<th style="text-align:left;">
+Title
+</th>
+<th style="text-align:right;">
+Year
+</th>
+<th style="text-align:right;">
+Budget
+</th>
+<th style="text-align:right;">
+Gross
+</th>
+<th style="text-align:right;">
+Profits
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+3451860
+</td>
+<td style="text-align:left;">
+Cowboys &amp; Aliens
+</td>
+<td style="text-align:right;">
+2011
+</td>
+<td style="text-align:right;">
+163000000
+</td>
+<td style="text-align:right;">
+174822325
+</td>
+<td style="text-align:right;">
+11822325
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3468347
+</td>
+<td style="text-align:left;">
+Dances with Wolves
+</td>
+<td style="text-align:right;">
+1990
+</td>
+<td style="text-align:right;">
+22000000
+</td>
+<td style="text-align:right;">
+424200000
+</td>
+<td style="text-align:right;">
+402200000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3519403
+</td>
+<td style="text-align:left;">
+Django Unchained
+</td>
+<td style="text-align:right;">
+2012
+</td>
+<td style="text-align:right;">
+100000000
+</td>
+<td style="text-align:right;">
+425368238
+</td>
+<td style="text-align:right;">
+325368238
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3696313
+</td>
+<td style="text-align:left;">
+High Noon
+</td>
+<td style="text-align:right;">
+1952
+</td>
+<td style="text-align:right;">
+730000
+</td>
+<td style="text-align:right;">
+18000000
+</td>
+<td style="text-align:right;">
+17270000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4134190
+</td>
+<td style="text-align:left;">
+Rango
+</td>
+<td style="text-align:right;">
+2011
+</td>
+<td style="text-align:right;">
+135000000
+</td>
+<td style="text-align:right;">
+245724603
+</td>
+<td style="text-align:right;">
+110724603
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4209793
+</td>
+<td style="text-align:left;">
+Shane
+</td>
+<td style="text-align:right;">
+1953
+</td>
+<td style="text-align:right;">
+3100000
+</td>
+<td style="text-align:right;">
+20000000
+</td>
+<td style="text-align:right;">
+16900000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4414139
+</td>
+<td style="text-align:left;">
+The Revenant
+</td>
+<td style="text-align:right;">
+2015
+</td>
+<td style="text-align:right;">
+135000000
+</td>
+<td style="text-align:right;">
+532925985
+</td>
+<td style="text-align:right;">
+397925985
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4444519
+</td>
+<td style="text-align:left;">
+The Wild Bunch
+</td>
+<td style="text-align:right;">
+1969
+</td>
+<td style="text-align:right;">
+6244087
+</td>
+<td style="text-align:right;">
+343800000
+</td>
+<td style="text-align:right;">
+337555913
+</td>
+</tr>
+</tbody>
+</table>
 
 
 
