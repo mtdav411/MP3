@@ -695,8 +695,8 @@ El Ardor
 </table>
 <p>XXX WRITE SOMETHING ANOUT THAT XXX</p>
 </div>
-<div id="top-10-years-western-movies-by-gross" class="section level3">
-<h3>Top 10 years Western movies by gross</h3>
+<div id="top-20-western-movies-by-gross" class="section level3">
+<h3>Top 20 Western movies by Gross</h3>
 <pre class="r"><code>toptengross &lt;- &quot;SELECT t.id, t.title, t.production_year,mi1.info AS Genre, mi2.info AS Gross
 FROM title t
 JOIN movie_info AS mi1 ON mi1.movie_id = t.id
@@ -708,7 +708,9 @@ AND t.kind_id = 1
 AND mi1.info_type_id = 3
 AND mi2.info_type_id = 107
 AND mi1.info = 'Western'
-AND mi3.info = 'USA';
+AND mi3.info = 'USA'
+AND t.production_year
+BETWEEN 1950 AND 2015;
 &quot;
 data_toptengross &lt;- db %&gt;%
   dbGetQuery(toptengross)
@@ -882,20 +884,6 @@ The Wild Bunch
 </tr>
 <tr>
 <td style="text-align:right;">
-4339285
-</td>
-<td style="text-align:left;">
-The Dark Tower
-</td>
-<td style="text-align:right;">
-2017
-</td>
-<td style="text-align:right;">
-337430352
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
 4382847
 </td>
 <td style="text-align:left;">
@@ -1020,11 +1008,27 @@ Ulzana’s Raid
 238900000
 </td>
 </tr>
+<tr>
+<td style="text-align:right;">
+3787372
+</td>
+<td style="text-align:left;">
+Junior Bonner
+</td>
+<td style="text-align:right;">
+1972
+</td>
+<td style="text-align:right;">
+234500000
+</td>
+</tr>
 </tbody>
 </table>
-<p>We found the top 10 movies with the highest gross box office, but those where not adjusted for inflation, Out of the many attempts of movie creations, what attributes worked in presenting a story that audience enjoy? From <a href="https://www.newsday.com/entertainment/movies/top-10-highest-grossing-westerns-1.5573403">Newsday</a>,()</p>
-<p>These movies are successful for a reason. <em>Cowboys &amp; Aliens</em> was made in attempt to add sci-fi component. <em>Rango</em> incorporated animation with the setting taken place in the Wild West. <em>Dances with the Wolves</em> have a historical point of view and have an education impact. <em>Il Buono, Il Brutto, Il Cativo</em> is not entirely about the action but instead focuses on rendering the atmosphere and describing each character and their motives.</p>
-<p>Also, we found the top 10 movies with the highest ratings. We can compare the slight difference in both table. Movies in the rating category are more about how well it’s made where as gross box office means there’s a wider range of audience it appeals to.</p>
+<p>We found the top 10 Western movies with the highest gross box office, but those where not adjusted for inflation. So we also looked up <a href="https://www.newsday.com/entertainment/movies/top-10-highest-grossing-westerns-1.5573403">Newsday’s top Western 10 movies with the highest gross box office adjusted for inflation</a>. Out of the many attempts of movie creations, what attributes worked in presenting a story that audience enjoy? From</p>
+<p>These movies are successful for a reason. <em>Rango</em> incorporated animation with the setting taken place in the Wild West. <em>Dances with the Wolves</em> have a historical point of view and have an education impact. <em>Il Buono, Il Brutto, Il Cativo</em> is not entirely about the action but instead focuses on rendering the atmosphere and describing each character and their motives.</p>
+</div>
+<div id="top-10-western-movies-with-the-highest-ratings" class="section level3">
+<h3>Top 10 Western movies with the highest ratings</h3>
 <pre class="r"><code>popularity &lt;- &quot;SELECT t.title, t.production_year, mi2.info AS Rating
 FROM title t
 JOIN movie_info AS mi1 ON mi1.movie_id = t.id
@@ -1173,7 +1177,9 @@ Blazing Saddles
 </tr>
 </tbody>
 </table>
+<p>We can compare the slight difference in both table. Movies in the rating category are more about how well it’s made and how the pop culture has influenced it during the years, while gross box office means there’s a wider range of audience it appeals to.</p>
 <p>Western films could make a resurgence, but it will depend on a combination of things. By doing more market surveys, a quality script, speak to contemporary concerns, and good actors/directors might be able to produce a movie that is profitable.</p>
+<p>Do we keep this ?</p>
 <pre class="r"><code>#Finding the gross and budget of western movies 
 
 profit &lt;- &quot;SELECT t.id, t.title, t.production_year, mi2.info AS Gross, mi3.info AS Budget
