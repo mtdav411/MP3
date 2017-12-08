@@ -4,6 +4,7 @@ author: "Ran Tao, Angela Huang, David Munoz Tord"
 output:
   html_document:
     code_folding: hide
+fontsize: 36pt
 ---
 ```{r message=FALSE, echo=FALSE, warning=FALSE}
 library(tidyverse)
@@ -19,9 +20,14 @@ db <- dbConnect_scidb(dbname = "imdb")
 ```
 This document was rendered on `r format(Sys.Date(), "%B %e, %Y")`
 
-Traditionally western films have been strictly about nomadic cowboys and gunfighters set in America in the late 19th century. In recent years, popular western genre movies have incorporated other aspects such as bounty hunters from other countries, LGBT topics, and technology. For Brokeback Mountain, it’s essentially a film about two cowboys that fell in love with each other. This LGBT centered topic would never be publicly shown or even filmed in the 1950s.  Django Unchained (2012) talks about a German dentist buying a African American slave. Many parts of the film shows scenes where Django is a African American cowboy riding a horse. West World (2016), which is a popular series on Netflix, where the setting is in the future with an amusement park of the imagined past such as bounty hunters, cowboys, guns and horse riding. 
+![](https://media.giphy.com/media/1zqkzJMV89QHK/giphy.gif)
+&nbsp;
 
-Table 1. Top ten years that produced more Western movies
+<big>Traditionally Western films have been strictly about nomadic cowboys and gunfighters set in America in the late 19th century. In recent years, popular Western genre movies have incorporated other aspects such as bounty hunters from other countries, LGBT topics, and technology. For *Brokeback Mountain*, it’s essentially a film about two cowboys that fell in love with each other. This LGBT centered topic would never be publicly shown or even filmed in the 1950s.  *Django Unchained* (2012) talks about a German dentist buying a African American slave. Many parts of the film shows scenes where Django is a African American cowboy riding a horse. *West World* (2016), which is a popular series on *Netflix*, where the setting is in the future with an amusement park of the imagined past such as bounty hunters, cowboys, guns and horse riding. 
+
+&nbsp;
+
+###Top 10 years that produced more Western movies
 ```{r, message=FALSE}
 #Join movie-info to title + Filtering only the Western genre movies between 1900 and 2015
 western <- "SELECT t.id, t.title, t.production_year AS Year, mi1.info AS Genre
@@ -47,7 +53,7 @@ kable(data1, "html") %>%
 We found that the western movie peaks in 1912 and 2014 and the ebb period is between 1975 and 2000. Which makes sence because the term western appeared the first time in july 1912 even if the genre was already existing.
 
 
-Histogram of production of Western movie from 1900 to 2015
+###Histogram of production of Western movie from 1900 to 2015
 ```{r}
 #Plot1: histogram with periods 
 ggplot(data, aes(Year)) +geom_histogram(binwidth = 1, alpha=.5, position="identity", fill ="#377EB8") + scale_x_continuous(breaks=seq(1900,2010,10), labels=c("1900","1910","1920","1930","1940","1950","1960","1970","1980","1990","2000", "2010")) +
@@ -56,11 +62,11 @@ ggplot(data, aes(Year)) +geom_histogram(binwidth = 1, alpha=.5, position="identi
 
 ```
 
-Westerns were very popular throughout the 1950s. Many of the most acclaimed Westerns were released during this time including High Noon (1952), Shane (1953), The Searchers (1956), and The Wild Bunch (1969). Classic Westerns such as these have been the inspiration for various films about Western-type characters in contemporary settings. The popularity of the Western continued to rise until its peak in the 1950s, when the number of Western films produced outnumbered all other genres combined.
+Westerns were very popular throughout the 1950s. Many of the most acclaimed Westerns were released during this time including High *Noon* (1952), *Shane* (1953), *The Searchers* (1956), and *The Wild Bunch* (1969). Classic Westerns such as these have been the inspiration for various films about Western-type characters in contemporary settings. The popularity of the Western continued to rise until its peak in the 1950s, when the number of Western films produced outnumbered all other genres combined (*William Indick, 2008*).
 
 
 
-We aim to see the definition of movie in 1950 and 2015 from the perspective of “budget”, “ country” and popularity. We tried to filter out the items “ budget” and “country” from the original dataset and see if there are any trend in these two aspects.
+We aimed to see the definition of movie in 1950 and 2015 from the perspective of *budget*, *country* and *popularity*. We tried to filter out the items *budget* and *country* from the original dataset and see if there are any trend in these two aspects.
 
 
 ```{r}
@@ -139,9 +145,9 @@ In addition, from the aspect of country, we found that for 2014 Western movies, 
 
 Today, with the high-speed development of technology and the shift of sociocultural values, western movies can be said to be going into a dead corner. What are the big changes they have gone through? We aim to look at successful top movie made in the past decade and explore what new possibilities and upcoming trends that can be associated with the genre. 
 
-Horses, sheriff, cowboys, and a battle of the good and evil Western genre that dominated cinema's first half-century went through many changes, from the golden age of the classical Westerns to italian western, antiwestern, and finally sci-fi western and neo-western. 
+Horses, sheriff, cowboys, and a battle of the good and evil Western genre that dominated cinema's first half-century went through many changes, from the golden age of the classical Westerns to italian western, anti-western, and finally sci-fi western and neo-western. 
 
-Hollywood studios are good at retelling stories. They are packaged and presented with good music and cast. The stories are told for the culture that demands them. The popularity of the genre declined as it was seen to be out-of touch with the audience. In the corporate capitalistic society, the strongest fist will win in a individual fight, however there is still rule and order. Between 1920 and 1960s, production companies were fighting with television series over the market. By the late 1960s, Americans began questioning the values and ideas presented in the western genre. Western all’italiana came into play from 60s to the 70s, the term Spaghetti Western is given by the film industry to the western genre films produced by Italians. Europe has a hype for the western genre, it provides a new world with individualism, justice, and equality. These films tend have a short production range, with a set cast, exaggerated acting expressions, and black humor. The rise of the popularity of western genre in Europe is more due to economic reasons rather than a film movement. Even when film production of the genre slowed down in the U.S. , the generation of Europeans that was after WWII still enjoy horseriding cowboys in the frontier. The success of Spaghetti Western also has another reason, and that is the Italians were tired of epic American heroes such as Maciste, Hercule, and Goliath. It’s boring to watch these muscular heroes. In Italian Western, the heroes are usually very intelligent, and they would beat angry muscular antiprotagonist at the very beginning. The heores are not usually written in history, their names are usually Ringo, Django, Gringo, Rojo, Indio, and such. Just as Sergio Leone is the leading figure in Italian western, Tarantino also attracted many people watching western using his speical set of artistic expressions. It’s dark and violent, people have alot of different ways to die. Scholars have commented the decline of Western have alot to do with the anti-war movement, and many killing in the genre are disliked. 
+Hollywood studios are good at retelling stories. They are packaged and presented with good music and cast. The stories are told for the culture that demands them. The popularity of the genre declined as it was seen to be out-of touch with the audience. In the corporate capitalistic society, the strongest fist will win in a individual fight, however there is still rule and order. Between 1920 and 1960, production companies were fighting with television series over the market. By the late 60s, Americans began questioning the values and ideas presented in the western genre. Western all’italiana came into play from 60s to the 70s, the term Spaghetti Western is given by the film industry to the western genre films produced by Italians. Europe has a hype for the western genre, it provides a new world with individualism, justice, and equality. These films tend have a short production range, with a set cast, exaggerated acting expressions, and black humor. The rise of the popularity of western genre in Europe is more due to economic reasons rather than a film movement. Even when film production of the genre slowed down in the U.S. , the generation of Europeans that was after WWII still enjoy horseriding cowboys in the frontier. The success of Spaghetti Western also has another reason, and that is the Italians were tired of epic American heroes such as Maciste, Hercule, and Goliath. It’s boring to watch these muscular heroes. In Italian Western, the heroes are usually very intelligent, and they would beat angry muscular antiprotagonist at the very beginning. The heores are not usually written in history, their names are usually Ringo, Django, Gringo, Rojo, Indio, and such. Just as Sergio Leone is the leading figure in Italian western, Tarantino also attracted many people watching western using his speical set of artistic expressions. It’s dark and violent, people have alot of different ways to die. Scholars have commented the decline of Western have alot to do with the anti-war movement, and many killing in the genre are disliked. 
 
 ```{r}
 # 3) Popularity
@@ -196,16 +202,23 @@ kable(data_popularity_2014_1, "html") %>%
 ```
 XXX WRITE SOMETHING ANOUT THAT XXX
 
+
+###Top 20 Western movies by Gross
 ```{r}
 toptengross <- "SELECT t.id, t.title, t.production_year,mi1.info AS Genre, mi2.info AS Gross
 FROM title t
 JOIN movie_info AS mi1 ON mi1.movie_id = t.id
 JOIN movie_info AS mi2 ON mi2.movie_id = t.id
+JOIN movie_info AS mi3 ON mi3.movie_id = t.id
 WHERE production_year IS NOT NULL
+AND mi3.info_type_id = 8
 AND t.kind_id = 1
 AND mi1.info_type_id = 3
 AND mi2.info_type_id = 107
-AND mi1.info = 'Western';
+AND mi1.info = 'Western'
+AND mi3.info = 'USA'
+AND t.production_year
+BETWEEN 1950 AND 2015;
 "
 data_toptengross <- db %>%
   dbGetQuery(toptengross)
@@ -215,18 +228,18 @@ data_toptengross <- cSplit(data_toptengross, "Gross", "(")
 
 data_toptengross_final <- data_toptengross %>%  mutate (Gross= parse_number(Gross_1)) %>% group_by(id, title, production_year) %>% summarise(Gross=max(Gross)) %>% arrange(desc(Gross)) %>% rename("Title" = title, "Year" = production_year)
 
-data_toptengross_final_1 <- head(data_toptengross_final,10)
+data_toptengross_final_1 <- head(data_toptengross_final,20)
 
 kable(data_toptengross_final_1, "html") %>%
   kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
 
 ```
 
-From [Newsday](https://www.newsday.com/entertainment/movies/top-10-highest-grossing-westerns-1.5573403), we found the top 10 movies with the highest gross box office (adjusted for inflation). Out of the many attempts of movie creations, what attributes worked in presenting a story that audience enjoy? 
+We found the top 10 Western movies with the highest gross box office, but those where not adjusted for inflation. So we also looked up [ Newsday's top Western 10 movies with the highest gross box office adjusted for inflation](https://www.newsday.com/entertainment/movies/top-10-highest-grossing-westerns-1.5573403). Out of the many attempts of movie creations, what attributes worked in presenting a story that audience enjoy?  From 
 
-These movies are successful for a reason. Cowboys & Aliens was made in attempt to add sci-fi component. Rango incorporated animation with the setting taken place in the Wild West. Dances with the Wolves have a historical point of view and have an education impact. II buono, II brutto, II cativo is not entirely about the action but instead focuses on rendering the atmosphere and describing each character and their motives. 
+These movies are successful for a reason. *Rango* incorporated animation with the setting taken place in the Wild West. *Dances with the Wolves* have a historical point of view and have an education impact. *Il Buono, Il Brutto, Il Cativo* is not entirely about the action but instead focuses on rendering the atmosphere and describing each character and their motives. 
 
-Also, we found the top 10 movies with the highest ratings. We can compare the slight difference in both table. Movies in the rating category are more about how well it’s made where as gross box office means there’s a wider range of audience it appeals to. 
+###Top 10 Western movies with the highest ratings
 ```{r}
 popularity <- "SELECT t.title, t.production_year, mi2.info AS Rating
 FROM title t
@@ -250,9 +263,11 @@ data_popularity_1 <- data_popularity %>%  rename("Title" = title, "Year" = produ
 kable(data_popularity_1, "html") %>%
   kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
 ```
+We can compare the slight difference in both table. Movies in the rating category are more about how well it’s made and how the pop culture has influenced it during the years, while gross box office means there’s a wider range of audience it appeals to.
 
 Western films could make a resurgence, but it will depend on a combination of things. By doing more market surveys, a quality script, speak to contemporary concerns, and good actors/directors might be able to produce a movie that is profitable. 
 
+Do we keep this ?
 ```{r}
 #Finding the gross and budget of western movies 
 
@@ -279,4 +294,4 @@ rename("Title" = title, "Year" = production_year)
 kable(data_profit_final, "html") %>%
   kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
 ```
-
+</big>
