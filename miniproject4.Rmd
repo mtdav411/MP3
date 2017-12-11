@@ -21,9 +21,11 @@ This document was rendered on `r format(Sys.Date(), "%B %e, %Y")`
 
 &nbsp;
 &nbsp;
+<div style="text-align:center" markdown="1">
 
-![](https://media.giphy.com/media/1zqkzJMV89QHK/giphy.gif)
+![Il Buono, il Brutto, il Cattivo (1966) - "The Trio" Scene](https://media.giphy.com/media/1zqkzJMV89QHK/giphy.gif)
 
+</div>
 &nbsp;
 &nbsp;
 
@@ -57,20 +59,19 @@ kable(data1, "html") %>%
 We found that the western movie peaks in 1912 and 2014 and the ebb period is between 1975 and 2000. Which makes sence because the term western appeared the first time in july 1912 even if the genre was already existing.
 
 
-###Histogram of production of Western movie from 1900 to 2015
-```{r}
+###Histogram of production of Western movie from 1900 to 2014
+```{r, fig.align='center',out.extra='angle=90'}
 #Plot1: histogram with periods 
 ggplot(data, aes(Year)) +geom_histogram(binwidth = 1, alpha=.5, position="identity", fill ="#377EB8") + scale_x_continuous(breaks=seq(1900,2010,10), labels=c("1900","1910","1920","1930","1940","1950","1960","1970","1980","1990","2000", "2010")) +
   geom_rect(data=data, aes(xmin=1910, xmax=1914, ymin= -Inf, ymax= +Inf), fill= "red", alpha = 0.002) +
   geom_rect(data=data, aes(xmin=2013, xmax=2015, ymin= -Inf, ymax= +Inf), fill= "red", alpha = 0.002)
-
 ```
 
 Westerns were very popular throughout the 1950s. Many of the most acclaimed Westerns were released during this time including High *Noon* (1952), *Shane* (1953), *The Searchers* (1956), and *The Wild Bunch* (1969). Classic Westerns such as these have been the inspiration for various films about Western-type characters in contemporary settings. The popularity of the Western continued to rise until its peak in the 1950s, when the number of Western films produced outnumbered all other genres combined (*William Indick, 2008*).
 
 
 
-We aimed to see the definition of movie in 1950 and 2015 from the perspective of *budget*, *country* and *popularity*. We tried to filter out the items *budget* and *country* from the original dataset and see if there are any trend in these two aspects.
+We aimed to see the definition of movie in 1950 and 2014 from the perspective of *budget*, *country* and *popularity*. We tried to filter out the items *budget* and *country* from the original dataset and see if there are any trend in these two aspects.
 
 
 ```{r}
@@ -105,7 +106,7 @@ kable(data_budget_2014, "html") %>%
   kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
 ```
 
-We found that Western movies in 1950 tends to have less budget than western movies in 2014.
+We found that Western movies in 1950 tends to have less budget than western movies in 2014, but again this is not accounting for inflation.
 
 ```{r}
 
@@ -151,7 +152,19 @@ Today, with the high-speed development of technology and the shift of sociocultu
 
 Horses, sheriff, cowboys, and a battle of the good and evil Western genre that dominated cinema's first half-century went through many changes, from the golden age of the classical Westerns to italian western, anti-western, and finally sci-fi western and neo-western. 
 
-Hollywood studios are good at retelling stories. They are packaged and presented with good music and cast. The stories are told for the culture that demands them. The popularity of the genre declined as it was seen to be out-of touch with the audience. In the corporate capitalistic society, the strongest fist will win in a individual fight, however there is still rule and order. Between 1920 and 1960, production companies were fighting with television series over the market. By the late 60s, Americans began questioning the values and ideas presented in the western genre. Western all’italiana came into play from 60s to the 70s, the term Spaghetti Western is given by the film industry to the western genre films produced by Italians. Europe has a hype for the western genre, it provides a new world with individualism, justice, and equality. These films tend have a short production range, with a set cast, exaggerated acting expressions, and black humor. The rise of the popularity of western genre in Europe is more due to economic reasons rather than a film movement. Even when film production of the genre slowed down in the U.S. , the generation of Europeans that was after WWII still enjoy horseriding cowboys in the frontier. The success of Spaghetti Western also has another reason, and that is the Italians were tired of epic American heroes such as Maciste, Hercule, and Goliath. It’s boring to watch these muscular heroes. In Italian Western, the heroes are usually very intelligent, and they would beat angry muscular antiprotagonist at the very beginning. The heores are not usually written in history, their names are usually Ringo, Django, Gringo, Rojo, Indio, and such. Just as Sergio Leone is the leading figure in Italian western, Tarantino also attracted many people watching western using his speical set of artistic expressions. It’s dark and violent, people have alot of different ways to die. Scholars have commented the decline of Western have alot to do with the anti-war movement, and many killing in the genre are disliked. 
+Hollywood studios are good at retelling stories. They are packaged and presented with good music and cast. The stories are told for the culture that demands them. The popularity of the genre declined as it was seen to be out-of touch with the audience. In the corporate capitalistic society, the strongest fist will win in a individual fight, however there is still rule and order. Between 1920 and 1960, production companies were fighting with television series over the market [The History of Film
+The 1920s] (http://www.filmsite.org/20sintro.html). 
+
+&nbsp;
+&nbsp;
+<div style="text-align:center" markdown="1">
+![On the set of Stagecoach directed by John Ford, 1939](https://theredlist.com/media/database/films/cinema/1930/stagecoach/043-stagecoach-theredlist.jpg)
+</div>
+&nbsp;
+&nbsp;
+
+
+By the late 60s, Americans began questioning the values and ideas presented in the western genre. Western all’italiana came into play from 60s to the 70s, the term Spaghetti Western is given by the film industry to the western genre films produced by Italians. Europe has a hype for the western genre, it provides a new world with individualism, justice, and equality. These films tend have a short production range, with a set cast, exaggerated acting expressions, and black humor. The rise of the popularity of western genre in Europe is more due to economic reasons rather than a film movement. Even when film production of the genre slowed down in the U.S. , the generation of Europeans that was after WWII still enjoy horseriding cowboys in the frontier. The success of Spaghetti Western also has another reason, and that is the Italians were tired of epic American heroes such as Maciste, Hercule, and Goliath. It’s boring to watch these muscular heroes. In Italian Western, the heroes are usually very intelligent, and they would beat angry muscular antiprotagonist at the very beginning. The heores are not usually written in history, their names are usually Ringo, Django, Gringo, Rojo, Indio, and such. Just as Sergio Leone is the leading figure in Italian western, Tarantino also attracted many people watching western using his speical set of artistic expressions. It’s dark and violent, people have alot of different ways to die. Scholars have commented the decline of Western have alot to do with the anti-war movement, and many killing in the genre are disliked. 
 
 #Do we keep this ?
 ```{r}
@@ -163,12 +176,14 @@ JOIN movie_info AS mi1 ON mi1.movie_id = t.id
 JOIN movie_info_idx AS mi2 ON mi2.movie_id = t.id
 JOIN movie_info_idx AS mi3 ON mi3.movie_id = t.id
 WHERE production_year IS NOT NULL
-AND mi3.info > 100000
 AND t.kind_id = 1
 AND mi1.info_type_id = 3
 AND mi2.info_type_id = 101
+AND mi3.info_type_id = 100
 AND mi1.info = 'Western'
-AND production_year = 1950
+AND production_year 
+BETWEEN 1945 AND 1955
+AND mi3.info > 10000
 ORDER BY mi2.info desc
 LIMIT 0,10;
 "
@@ -187,12 +202,14 @@ JOIN movie_info AS mi1 ON mi1.movie_id = t.id
 JOIN movie_info_idx AS mi2 ON mi2.movie_id = t.id
 JOIN movie_info_idx AS mi3 ON mi3.movie_id = t.id
 WHERE production_year IS NOT NULL
-AND mi3.info > 100000
 AND t.kind_id = 1
 AND mi1.info_type_id = 3
 AND mi2.info_type_id = 101
+AND mi3.info_type_id = 100
 AND mi1.info = 'Western'
-AND production_year = 2014
+AND production_year 
+BETWEEN 2010 AND 2017
+AND mi3.info > 10000
 ORDER BY mi2.info desc
 LIMIT 0,10;
 "
@@ -240,8 +257,9 @@ kable(data_toptengross_final_1, "html") %>%
 
 ```
 
-We found the top 10 Western movies with the highest gross box office, but those where not adjusted for inflation. So, we also looked up [Newsday's top Western 10 movies with the highest gross box office adjusted for inflation](https://www.newsday.com/entertainment/movies/top-10-highest-grossing-westerns-1.5573403). Out of the many attempts of movie creations, what attributes worked in presenting a story that audience enjoy?  From 
+We found the top 10 Western movies with the highest gross box office in the US between 1950 and 2015, but those where not adjusted for inflation. So, we also looked up [Newsday's top Western 10 movies with the highest gross box office adjusted for inflation](https://www.newsday.com/entertainment/movies/top-10-highest-grossing-westerns-1.5573403). And also, it is not fully accurate to compare the gros of a movie release 50 years ago to a movie released 2 years ago.
 
+Out of the many attempts of movie creations, what attributes worked in presenting a story that audience enjoy?
 These movies are successful for a reason. *Rango* incorporated animation with the setting taken place in the Wild West. *Dances with the Wolves* have a historical point of view and have an education impact. *Il Buono, Il Brutto, Il Cativo* is not entirely about the action but instead focuses on rendering the atmosphere and describing each character and their motives. 
 
 ###Top 10 Western movies with the highest ratings
@@ -252,11 +270,12 @@ JOIN movie_info AS mi1 ON mi1.movie_id = t.id
 JOIN movie_info_idx AS mi2 ON mi2.movie_id = t.id
 JOIN movie_info_idx AS mi3 ON mi3.movie_id = t.id
 WHERE production_year IS NOT NULL
-AND mi3.info > 100000
 AND t.kind_id = 1
 AND mi1.info_type_id = 3
 AND mi2.info_type_id = 101
+AND mi3.info_type_id = 100
 AND mi1.info = 'Western'
+AND mi3.info > 100000
 ORDER BY mi2.info desc
 LIMIT 0,10;
 "
