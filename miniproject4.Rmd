@@ -138,10 +138,10 @@ kable(data_country_2014, "html") %>%
 ```
 
 
+ 
 
-In addition, horses, sheriff, cowboys, and a battle of the good and evil Western genre that dominated cinema's first half-century went through many changes, from the golden age of the classical Westerns to italian western, anti-western, and finally sci-fi western and neo-western. 
+Hollywood studios are good at retelling stories. They are packaged and presented with good music and cast. The stories are told for the culture that demands them. [This website](http://www.filmsite.org/20sintro.html) shows the history of film, beginning in 1920s, there were major changes to the dynamic and structure of production companies. In 1950, there was only four films made that was non-Western. The studios account for everything from production to releasing of the movies in theaters.  
 
-Hollywood studios are good at retelling stories. They are packaged and presented with good music and cast. The stories are told for the culture that demands them. [This website](http://www.filmsite.org/20sintro.html) shows the history of film, beginning in 1920s, there were major changes to the dynamic and structure of production companies. In 1950, there was only four films made that was non-western.  
 
 &nbsp;
 &nbsp;
@@ -152,7 +152,7 @@ Hollywood studios are good at retelling stories. They are packaged and presented
 &nbsp;
 
 
-International film directors aided in the popularity of the genre. Western all’italiana came into play from 60s to the 70s. Director *Sergio Leone* produced many Westerns that was successful internationally. The movie *Il buono, il brutto, il cattivo* and *C’era una volta il West* rank among the top 20 Western movies by gross. The heroes are not usually written in history, the names in the list of popular movies we show below, many of the heroes’ names are Ringo, Django, Gringo, etc. Just as *Sergio Leone* is the leading figure in Italian western, Tarantino also attracted many people watching western using his special set of artistic expressions. Movies such as *The Revenant* and *Hateful Eight* were very successful in terms of box office.  
+International film directors aided in the popularity of the genre. Western all’italiana came into play from 60s to the 70s. Director *Sergio Leone* produced many Westerns that was successful internationally. The movie *Il buono, il brutto, il cattivo* (The Good,the Bad, and the Ugly) and *C’era una volta il West* (Once upon a time in the West) rank among the top 20 Western movies by gross. The heroes are not usually written in history, the names in the list of popular movies we show below, many of the heroes’ names are Ringo, Django, Gringo, etc. Just as *Sergio Leone* is the leading figure in Italian Western, Tarantino also attracted many people watching Western using his special set of artistic expressions. Movies such as *The Revenant* and *Hateful Eight* were very successful in terms of box office.  
 
 
 ###Top 20 Western movies by Gross
@@ -161,7 +161,7 @@ From the IMDB database, we found the top 10 Western movies with the highest gros
 Out of the many attempts of movie creations, what attributes worked in presenting a story that audience enjoy? 
 These movies are successful for a reason. *Rango* incorporated animation with the setting taken place in the Wild West. *Dances with the Wolves* have a historical point of view and have an education impact. *II buono, II brutto, II cativo* is not entirely about the action but instead focuses on rendering the atmosphere and describing each character and their motives. 
 
-Besides the Gross, we are also interested to see how those Western movies rank across the years and hope to see if there is a direct relationship of Gross and rating of those Western movies. 
+Besides the gross, we are also interested to see how those Western movies rank across the years and hope to see if there is a direct relationship of gross and rating of those Western movies. 
 
 ```{r}
 toptengross <- "SELECT t.id, t.title, t.production_year,mi1.info AS Genre, mi2.info AS Gross
@@ -199,7 +199,8 @@ kable(data_toptengross_final_1, "html") %>%
 
 ###Top 10 Western movies with the highest ratings
 
-From the IMDB database, we found the top 10 movies with the highest ratings. We can compare the slight difference in both table, which means they do have some correlation. However, the definition of the movies are different. Movies in the rating category are more about how well it’s made where as gross box office means there’s a wider range of audience it appeals to. 
+From the IMDB database, we found the top 10 movies with the highest ratings. We can compare the slight difference in both table, which means they do have some correlation. However, the definition of the movies are different. Movies in the rating category are more about how well it’s made where as gross box office means there’s a wider range of audience it appeals to. Thus, these might count as one of reasons why those two tables are not completely overlapping. 
+
 
 ```{r}
 popularity <- "SELECT t.title, t.production_year, mi2.info AS Rating
@@ -231,7 +232,7 @@ We can compare the slight difference in both table. Movies in the rating categor
 Western films could make a resurgence, but it will depend on a combination of things. By doing more market surveys, a quality script, speak to contemporary concerns, and good actors/directors might be able to produce a movie that is profitable. 
 
 
-###Average ratings of Western Movies per Year
+###Average ratings of Western movies per Year
 Finally, we found that the popularity trend (rating average) of the Western genre has been decreasing since the 20’s. 
 ```{r, fig.align='center',out.extra='angle=90'}
 popularity_year <- "SELECT t.title, t.production_year, mi2.info AS Rating
@@ -255,7 +256,7 @@ data_popularity_year <- db %>%
 data2 <- data_popularity_year %>% mutate (Rating= parse_number(Rating))%>% group_by(production_year) %>% summarise(average_rating = mean(Rating, na.rm=TRUE)) %>% rename("Year" = production_year, "Average_Rating" = average_rating )
 ggplot(data2, aes(x=Year, y=Average_Rating)) +geom_col(alpha=.5, position="identity", fill ="#377EB8") + scale_x_continuous(breaks=seq(1900,2010,10)) + stat_smooth(method=lm)
 ```
-Western films could make a resurgence, but it will depend on a combination of things. By doing more market surveys, a quality script, speak to contemporary concerns, and good actors/directors might be able to produce a movie that is profitable. 
+Western films could make a resurgence, but it will depend on a combination of things. By doing more market surveys, a quality script, speak to contemporary concerns, and good actor or directors might be able to produce a movie that is profitable. 
 
 
 
